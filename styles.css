@@ -1,8 +1,16 @@
     /* 
        1. VARIÁVEIS DE IDENTIDADE VISUAL & CONFIGURAÇÕES
         */
+
+    @font-face {
+      font-family: 'VerveAlternate';
+      src: url('./assets/fonts/verve_alternate.ttf') format('truetype');
+      font-weight: 400 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
     :root {
-      /* Paleta extraída da estampa e papelaria */
       --olive-dark: #3B412E;
       --olive-main: #4C533D;
       --olive-soft: #687156;
@@ -17,6 +25,7 @@
       --font-display: 'Cinzel', Georgia, serif;
       --font-serif: 'Cormorant Garamond', Georgia, serif;
       --font-sans: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-header: 'VerveAlternate', Georgia, serif;
 
       /* Assets (Caminhos relativos na mesma pasta) */
       --asset-pattern: url('Estampa - com repetição.jpg');
@@ -110,7 +119,7 @@
     }
 
     .stage-names {
-      font-family: var(--font-display);
+      font-family: var(--font-header);
       font-size: 1.65rem;
       letter-spacing: 0.14em;
       color: var(--olive-main);
@@ -169,7 +178,7 @@
       justify-content: center;
       padding: 16px;
       text-align: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
       transition: transform var(--transition-card);
       will-change: transform;
     }
@@ -257,14 +266,22 @@
       width: 58px;
       height: 58px;
       object-fit: contain;
-      mix-blend-mode: screen; /* Remove o fundo preto puro e preserva o branco */
+      mix-blend-mode: screen;
+      /* Remove o fundo preto puro e preserva o branco */
       filter: contrast(1.25);
       pointer-events: none;
     }
 
     @keyframes sealPulse {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); }
-      50% { transform: translate(-50%, -50%) scale(1.05); }
+
+      0%,
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      50% {
+        transform: translate(-50%, -50%) scale(1.05);
+      }
     }
 
     /* Estados da Animação de Abertura */
@@ -375,7 +392,7 @@
     }
 
     .couple-names {
-      font-family: var(--font-display);
+      font-family: var(--font-header);
       font-size: 2.05rem;
       line-height: 1.25;
       letter-spacing: 0.12em;
@@ -610,7 +627,7 @@
       width: 24px;
       height: 24px;
       border-radius: 50%;
-      border: 1px solid rgba(0,0,0,0.12);
+      border: 1px solid rgba(0, 0, 0, 0.12);
     }
 
     /* Pix Box */
@@ -685,11 +702,16 @@
       padding: 8px 8px 24px;
       border-radius: 4px;
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-      border: 1px solid rgba(0,0,0,0.05);
+      border: 1px solid rgba(0, 0, 0, 0.05);
     }
 
-    .polaroid:nth-child(odd) { transform: rotate(-1.5deg); }
-    .polaroid:nth-child(even) { transform: rotate(1.5deg); }
+    .polaroid:nth-child(odd) {
+      transform: rotate(-1.5deg);
+    }
+
+    .polaroid:nth-child(even) {
+      transform: rotate(1.5deg);
+    }
 
     .polaroid-placeholder {
       aspect-ratio: 1 / 1;
