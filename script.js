@@ -1,6 +1,6 @@
-    /* ==========================================================================
+    /* 
        CONFIGURAÇÕES EDITÁVEIS DO CONVITE
-       ========================================================================== */
+        */
     const WEDDING_CONFIG = {
       // Data oficial corrigida: 03 de Abril de 2027 às 16:00 (Horário de Brasília -03:00)
       dateISO: '2027-04-03T16:00:00-03:00',
@@ -13,9 +13,9 @@
       }
     };
 
-    /* ==========================================================================
+    /* 
        1. TRANSIÇÃO DE ABERTURA DO ENVELOPE (COM TRAVA DE DUPLO CLIQUE)
-       ========================================================================== */
+        */
     (function initEnvelope() {
       const trigger = document.getElementById('envelopeTrigger');
       const stage = document.getElementById('envelopeStage');
@@ -46,9 +46,9 @@
       });
     })();
 
-    /* ==========================================================================
+    /* 
        2. CONTAGEM REGRESSIVA
-       ========================================================================== */
+        */
     (function initCountdown() {
       const targetTime = new Date(WEDDING_CONFIG.dateISO).getTime();
       const elDays = document.getElementById('cd-days');
@@ -75,39 +75,9 @@
       setInterval(update, 1000);
     })();
 
-    /* ==========================================================================
-       3. SALVAR NA AGENDA (GERADOR NATIVO .ICS SEM DEPENDÊNCIAS)
-       ========================================================================== */
-    document.getElementById('btnSaveCalendar').addEventListener('click', () => {
-      const ev = WEDDING_CONFIG.calendarEvent;
-      const icsContent = [
-        'BEGIN:VCALENDAR',
-        'VERSION:2.0',
-        'PRODID:-//Thamiris e Rafael//Convite Digital//PT',
-        'BEGIN:VEVENT',
-        `DTSTART:${ev.startUTC}`,
-        `DTEND:${ev.endUTC}`,
-        `SUMMARY:${ev.title}`,
-        `DESCRIPTION:${ev.description}`,
-        `LOCATION:${ev.location}`,
-        'END:VEVENT',
-        'END:VCALENDAR'
-      ].join('\r\n');
-
-      const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'casamento-thamiris-e-rafael.ics';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    });
-
-    /* ==========================================================================
-       4. COPIAR CHAVE PIX COM FEEDBACK VISUAL
-       ========================================================================== */
+    /* 
+       5. COPIAR CHAVE PIX COM FEEDBACK VISUAL
+        */
     document.getElementById('btnCopyPix').addEventListener('click', async function () {
       const key = document.getElementById('pixKeyText').textContent.trim();
       const originalText = this.textContent;
