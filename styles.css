@@ -1,0 +1,742 @@
+    /* ==========================================================================
+       1. VARIÁVEIS DE IDENTIDADE VISUAL & CONFIGURAÇÕES
+       ========================================================================== */
+    :root {
+      /* Paleta extraída da estampa e papelaria */
+      --olive-dark: #3B412E;
+      --olive-main: #4C533D;
+      --olive-soft: #687156;
+      --olive-tint: #E9ECE2;
+      --paper-bg: #F7F5EE;
+      --paper-card: #FDFCF8;
+      --gold-accent: #B69B66;
+      --text-main: #2E3325;
+      --text-muted: #5C634E;
+
+      /* Tipografia */
+      --font-display: 'Cinzel', Georgia, serif;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      /* Assets (Caminhos relativos na mesma pasta) */
+      --asset-pattern: url('Estampa - com repetição.jpg');
+      --asset-monogram: url('Monograma - branco.jpg');
+
+      /* Tempos de animação */
+      --transition-flap: 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-card: 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* ==========================================================================
+       2. RESET & BASE MOBILE-FIRST
+       ========================================================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--olive-dark);
+    }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--text-main);
+      background-color: var(--paper-bg);
+      min-height: 100dvh;
+      overflow-x: hidden;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Trava o scroll enquanto o envelope estiver fechado */
+    body.is-locked {
+      overflow: hidden;
+      height: 100dvh;
+    }
+
+    /* Container centralizado para manter proporção elegante no Desktop */
+    .app-shell {
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100dvh;
+      background-color: var(--paper-bg);
+      position: relative;
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.35);
+    }
+
+    /* ==========================================================================
+       3. ESTADO 1: TELA DO ENVELOPE INTERATIVO
+       ========================================================================== */
+    .envelope-stage {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      max-width: 480px;
+      margin: 0 auto;
+      height: 100dvh;
+      background-color: var(--paper-bg);
+      background-image: radial-gradient(circle at 50% 30%, #FFFFFF 0%, var(--paper-bg) 75%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6vh 24px 7vh;
+      transition: opacity 0.75s ease, transform 0.85s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.75s;
+      will-change: opacity, transform;
+    }
+
+    .envelope-stage.is-hidden {
+      opacity: 0;
+      transform: scale(1.04);
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .stage-header {
+      text-align: center;
+      z-index: 2;
+    }
+
+    .stage-quote {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .stage-names {
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      letter-spacing: 0.14em;
+      color: var(--olive-main);
+      font-weight: 500;
+    }
+
+    /* Estrutura 3D do Envelope */
+    .envelope-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 340px;
+      aspect-ratio: 4 / 2.85;
+      perspective: 1200px;
+      cursor: pointer;
+      touch-action: manipulation;
+      user-select: none;
+    }
+
+    .envelope-body {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background-color: var(--olive-dark);
+      border-radius: 6px;
+      box-shadow: 0 22px 45px rgba(46, 51, 37, 0.28);
+      transform-style: preserve-3d;
+    }
+
+    /* Forro interno com a estampa de repetição */
+    .envelope-liner {
+      position: absolute;
+      inset: 4px;
+      border-radius: 4px;
+      background-color: var(--olive-main);
+      background-image: var(--asset-pattern);
+      background-size: 150px auto;
+      background-repeat: repeat;
+      opacity: 0.92;
+      z-index: 1;
+    }
+
+    /* Cartão interno que sobe na abertura */
+    .envelope-letter-preview {
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      bottom: 8%;
+      height: 82%;
+      background: var(--paper-card);
+      border: 1px solid rgba(182, 155, 102, 0.45);
+      border-radius: 4px;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+      transition: transform var(--transition-card);
+      will-change: transform;
+    }
+
+    .envelope-letter-preview span {
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      color: var(--olive-main);
+    }
+
+    /* Bolso frontal do envelope (dobras laterais e inferior) */
+    .envelope-pocket {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .envelope-pocket::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--olive-main) 0%, var(--olive-dark) 100%);
+      clip-path: polygon(0 0, 50% 54%, 100% 0, 100% 100%, 0 100%);
+    }
+
+    .envelope-pocket::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.04);
+      clip-path: polygon(0 100%, 50% 48%, 100% 100%);
+    }
+
+    /* Aba superior articulada */
+    .envelope-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 58%;
+      z-index: 4;
+      transform-origin: top center;
+      transition: transform var(--transition-flap);
+      will-change: transform;
+      pointer-events: none;
+    }
+
+    .envelope-flap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, #565E46 0%, var(--olive-main) 100%);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.25));
+    }
+
+    /* Selo Central com o Monograma */
+    .wax-seal {
+      position: absolute;
+      top: 52%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 5;
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #646D52, var(--olive-dark) 75%);
+      border: 2px solid rgba(182, 155, 102, 0.65);
+      box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.35),
+        inset 0 2px 4px rgba(255, 255, 255, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.45s ease, opacity 0.4s ease;
+      animation: sealPulse 2.6s infinite ease-in-out;
+    }
+
+    /* Truque de limpeza visual para o JPG com fundo preto */
+    .wax-seal img {
+      width: 58px;
+      height: 58px;
+      object-fit: contain;
+      mix-blend-mode: screen; /* Remove o fundo preto puro e preserva o branco */
+      filter: contrast(1.25);
+      pointer-events: none;
+    }
+
+    @keyframes sealPulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.05); }
+    }
+
+    /* Estados da Animação de Abertura */
+    .envelope-wrapper.is-opening .wax-seal {
+      animation: none;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.75);
+    }
+
+    .envelope-wrapper.is-opening .envelope-flap {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .envelope-wrapper.is-opening .envelope-letter-preview {
+      transform: translateY(-48%);
+    }
+
+    .stage-hint {
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--olive-main);
+      opacity: 0.85;
+      text-align: center;
+    }
+
+    /* ==========================================================================
+       4. ESTADO 2: CONVITE EXPANDIDO & SEÇÕES
+       ========================================================================== */
+    .invitation-content {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.8s ease 0.2s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
+    }
+
+    .invitation-content.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Faixa decorativa superior com a estampa */
+    .pattern-banner {
+      height: 110px;
+      background-color: var(--olive-main);
+      background-image: var(--asset-pattern);
+      background-size: 165px auto;
+      background-repeat: repeat;
+      position: relative;
+    }
+
+    .pattern-banner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(59, 65, 46, 0.25) 0%, var(--paper-bg) 100%);
+    }
+
+    /* Cartão Principal Editorial */
+    .hero-card {
+      margin: -48px 18px 28px;
+      padding: 36px 22px 40px;
+      background-color: var(--paper-card);
+      border: 1px solid rgba(182, 155, 102, 0.5);
+      border-radius: 16px;
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      box-shadow: 0 12px 35px rgba(46, 51, 37, 0.08);
+    }
+
+    /* Moldura interna dupla inspirada no monograma */
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border: 1px solid rgba(76, 83, 61, 0.22);
+      border-radius: 11px;
+      pointer-events: none;
+    }
+
+    .hero-monogram {
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 14px;
+      background-color: var(--olive-main);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+    }
+
+    .hero-monogram img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      mix-blend-mode: screen;
+      filter: contrast(1.25);
+    }
+
+    .opening-phrase {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    .couple-names {
+      font-family: var(--font-display);
+      font-size: 2.05rem;
+      line-height: 1.25;
+      letter-spacing: 0.12em;
+      color: var(--olive-main);
+      font-weight: 500;
+      margin-bottom: 14px;
+    }
+
+    .couple-names .amp {
+      display: block;
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.5rem;
+      color: var(--gold-accent);
+      margin: 2px 0;
+    }
+
+    .invite-subtext {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      max-width: 270px;
+      margin: 0 auto 22px;
+    }
+
+    .date-badge {
+      display: inline-block;
+      padding: 12px 22px;
+      border-top: 1px solid var(--gold-accent);
+      border-bottom: 1px solid var(--gold-accent);
+      margin-bottom: 24px;
+    }
+
+    .date-badge strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      letter-spacing: 0.14em;
+      color: var(--olive-dark);
+    }
+
+    .date-badge span {
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* Contagem Regressiva */
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .countdown-item {
+      background: var(--olive-tint);
+      padding: 10px 4px;
+      border-radius: 8px;
+    }
+
+    .countdown-item span {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--olive-dark);
+    }
+
+    .countdown-item small {
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    /* Botões Gerais */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 13px 18px;
+      border-radius: 8px;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background-color: var(--olive-main);
+      color: #FFFFFF;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--olive-main);
+      border: 1px solid var(--olive-main);
+    }
+
+    /* ==========================================================================
+       5. BLOCOS MODULARES DE SEÇÃO
+       ========================================================================== */
+    .section-block {
+      padding: 28px 20px;
+      border-top: 1px solid rgba(76, 83, 61, 0.12);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .section-eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold-accent);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      letter-spacing: 0.1em;
+      color: var(--olive-dark);
+      font-weight: 500;
+    }
+
+    /* Cards de Cerimônia e Recepção */
+    .event-card {
+      background: var(--paper-card);
+      border: 1px solid rgba(76, 83, 61, 0.18);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .event-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      background: var(--olive-tint);
+      color: var(--olive-dark);
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    .event-card h3 {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      color: var(--olive-dark);
+      margin-bottom: 6px;
+    }
+
+    .event-info {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    .event-note {
+      font-size: 0.78rem;
+      background: var(--paper-bg);
+      padding: 8px 12px;
+      border-left: 2px solid var(--gold-accent);
+      color: var(--text-main);
+      margin-bottom: 14px;
+    }
+
+    /* Banner RSVP */
+    .rsvp-box {
+      background-color: var(--olive-main);
+      color: #FFFFFF;
+      border-radius: 14px;
+      padding: 26px 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .rsvp-deadline {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin: 10px 0 18px;
+    }
+
+    .rsvp-box .btn-light {
+      background-color: var(--paper-bg);
+      color: var(--olive-dark);
+      font-weight: 600;
+    }
+
+    /* Dress Code */
+    .dresscode-card {
+      background: var(--paper-card);
+      border: 1px solid rgba(182, 155, 102, 0.45);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .palette-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,0,0,0.12);
+    }
+
+    /* Pix Box */
+    .pix-box {
+      margin-top: 14px;
+      background: var(--olive-tint);
+      padding: 14px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .pix-key {
+      font-family: monospace;
+      font-size: 0.85rem;
+      background: #FFFFFF;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px dashed var(--olive-soft);
+      margin: 8px 0 12px;
+      word-break: break-all;
+      color: var(--olive-dark);
+    }
+
+    /* Acordeão (Manual dos Convidados) */
+    details.guide-item {
+      background: var(--paper-card);
+      border: 1px solid rgba(76, 83, 61, 0.18);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    details.guide-item summary {
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--olive-dark);
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    details.guide-item summary::after {
+      content: '+';
+      font-size: 1.2rem;
+      color: var(--gold-accent);
+    }
+
+    details.guide-item[open] summary::after {
+      content: '−';
+    }
+
+    .guide-body {
+      padding: 0 16px 16px;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(76, 83, 61, 0.08);
+      padding-top: 12px;
+    }
+
+    /* Galeria Polaroid */
+    .polaroid-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .polaroid {
+      background: #FFFFFF;
+      padding: 8px 8px 24px;
+      border-radius: 4px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .polaroid:nth-child(odd) { transform: rotate(-1.5deg); }
+    .polaroid:nth-child(even) { transform: rotate(1.5deg); }
+
+    .polaroid-placeholder {
+      aspect-ratio: 1 / 1;
+      background: var(--olive-tint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 10px;
+      font-size: 0.7rem;
+      color: var(--olive-soft);
+    }
+
+    /* Rodapé */
+    .site-footer {
+      background-color: var(--olive-dark);
+      background-image: var(--asset-pattern);
+      background-size: 150px auto;
+      color: var(--paper-bg);
+      text-align: center;
+      padding: 44px 24px;
+      position: relative;
+    }
+
+    .site-footer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(46, 51, 37, 0.84);
+    }
+
+    .site-footer-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-quote {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.3rem;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    .footer-initials {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      color: var(--gold-accent);
+    }

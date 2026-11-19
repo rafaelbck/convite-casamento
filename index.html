@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#4C533D" />
+  <link rel="stylesheet" href="./styles.css" />
+  <title>Thamiris & Rafael — 03 de Abril de 2027</title>
+
+  <!-- Fontes Editoriais (Google Fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
+
+</head>
+<body class="is-locked">
+
+  <div class="app-shell">
+
+    <!-- ======================================================================
+         ESTADO 1: ENVELOPE FECHADO (TELA INICIAL)
+         ====================================================================== -->
+    <section class="envelope-stage" id="envelopeStage" aria-label="Convite fechado">
+      <div class="stage-header">
+        <p class="stage-quote">Grandes amores... Pedem grandes festas</p>
+        <h1 class="stage-names">THAMIRIS &amp; RAFAEL</h1>
+      </div>
+
+      <div class="envelope-wrapper" id="envelopeTrigger" role="button" tabindex="0" aria-label="Abrir convite de casamento">
+        <div class="envelope-body">
+          <div class="envelope-liner"></div>
+
+          <div class="envelope-letter-preview">
+            <span>03 . 04 . 2027</span>
+            <p style="font-family: var(--font-serif); font-size: 0.95rem; margin-top: 4px; color: var(--text-muted);">
+              Você é nosso convidado
+            </p>
+          </div>
+
+          <div class="envelope-pocket"></div>
+          <div class="envelope-flap"></div>
+
+          <div class="wax-seal">
+            <img src="Monograma - branco.jpg" alt="Monograma TR" />
+          </div>
+        </div>
+      </div>
+
+      <p class="stage-hint">Toque no selo para abrir</p>
+    </section>
+
+    <!-- ======================================================================
+         ESTADO 2: CONVITE EXPANDIDO
+         ====================================================================== -->
+    <main class="invitation-content" id="invitationContent">
+      <div class="pattern-banner"></div>
+
+      <!-- Cartão Principal -->
+      <header class="hero-card">
+        <div class="hero-monogram">
+          <img src="Monograma - branco.jpg" alt="Monograma TR" />
+        </div>
+
+        <p class="opening-phrase">Grandes amores...<br />Pedem grandes festas</p>
+
+        <h2 class="couple-names">
+          THAMIRIS
+          <span class="amp">&amp;</span>
+          RAFAEL
+        </h2>
+
+        <p class="invite-subtext">Convidam para a celebração do seu casamento</p>
+
+        <div class="date-badge">
+          <strong>03 DE ABRIL DE 2027</strong>
+          <span>Sábado • às 16h</span>
+        </div>
+
+        <!-- Contagem Regressiva -->
+        <div class="countdown-grid" id="countdown" aria-label="Contagem regressiva">
+          <div class="countdown-item"><span id="cd-days">--</span><small>Dias</small></div>
+          <div class="countdown-item"><span id="cd-hours">--</span><small>Horas</small></div>
+          <div class="countdown-item"><span id="cd-mins">--</span><small>Min</small></div>
+          <div class="countdown-item"><span id="cd-secs">--</span><small>Seg</small></div>
+        </div>
+
+        <button type="button" class="btn btn-outline" id="btnSaveCalendar">
+          Salvar na Agenda
+        </button>
+      </header>
+
+      <!-- Seção 1: Cerimônia e Recepção Separadas -->
+      <section class="section-block" id="locais">
+        <div class="section-header">
+          <span class="section-eyebrow">Onde &amp; Quando</span>
+          <h2 class="section-title">Cerimônia &amp; Recepção</h2>
+        </div>
+
+        <!-- Card Cerimônia -->
+        <article class="event-card">
+          <span class="event-tag">Cerimônia • 16h00</span>
+          <h3>Catedral Nossa Senhora de Belém</h3>
+          <p class="event-info">
+            <!-- [INSERIR: Endereço completo da Catedral, Bairro, Guarapuava - PR, CEP] -->
+            Rua / Praça [INSERIR ENDEREÇO COMPLETO], Guarapuava - PR
+          </p>
+          <p class="event-note">
+            <!-- [INSERIR: Observação de pontualidade ou estacionamento na igreja] -->
+            Recomendamos chegar com 20 minutos de antecedência.
+          </p>
+          <a href="#" target="_blank" rel="noopener" class="btn btn-outline">
+            <!-- [INSERIR: Link Google Maps da Catedral] -->
+            Ver Rota da Cerimônia
+          </a>
+        </article>
+
+        <!-- Card Recepção -->
+        <article class="event-card">
+          <span class="event-tag">Recepção • Logo após a cerimônia</span>
+          <h3>Centro de Eventos Bass Ranch</h3>
+          <p class="event-info">
+            <!-- [INSERIR: Endereço completo / Rodovia do Bass Ranch, Guarapuava - PR] -->
+            [INSERIR ENDEREÇO / KM DO BASS RANCH], Guarapuava - PR
+          </p>
+          <p class="event-note">
+            <!-- [INSERIR: Informação sobre estacionamento no local ou distância da igreja] -->
+            Estacionamento no local. [INSERIR DETALHES ADICIONAIS]
+          </p>
+          <a href="#" target="_blank" rel="noopener" class="btn btn-outline">
+            <!-- [INSERIR: Link Google Maps do Bass Ranch] -->
+            Ver Rota da Recepção
+          </a>
+        </article>
+      </section>
+
+      <!-- Seção 2: RSVP com Prazo -->
+      <section class="section-block" id="rsvp">
+        <div class="rsvp-box">
+          <span class="section-eyebrow" style="color: #E2D3B3;">Confirmação de Presença</span>
+          <h2 class="section-title" style="color: #FFFFFF;">Sua presença é essencial</h2>
+
+          <div class="rsvp-deadline">
+            <!-- [INSERIR: Data limite oficial para RSVP] -->
+            Confirmar até: [INSERIR DATA LIMITE, EX: 03/03/2027]
+          </div>
+
+          <p style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 18px;">
+            Por favor, confirme seu nome e de seus acompanhantes para organizarmos tudo com carinho.
+          </p>
+
+          <a href="#" target="_blank" rel="noopener" class="btn btn-light">
+            <!-- [INSERIR: Link do formulário RSVP ou WhatsApp da assessoria] -->
+            Confirmar Presença
+          </a>
+        </div>
+      </section>
+
+      <!-- Seção 3: Dress Code -->
+      <section class="section-block" id="dresscode">
+        <div class="section-header">
+          <span class="section-eyebrow">Orientações</span>
+          <h2 class="section-title">Dress Code</h2>
+        </div>
+
+        <div class="dresscode-card">
+          <h3 style="font-family: var(--font-serif); font-size: 1.3rem; color: var(--olive-dark); margin-bottom: 8px;">
+            <!-- [INSERIR: Traje escolhido, ex: Passeio Completo / Social] -->
+            [INSERIR TRAJE: Ex. Passeio Completo]
+          </h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">
+            <!-- [INSERIR: Dicas sobre salto para o espaço da recepção, clima de abril em Guarapuava à noite, cores reservadas] -->
+            [INSERIR ORIENTAÇÕES: Ex. A cerimônia começa às 16h e a festa segue à noite; sugerimos levar um agasalho leve. Pedimos gentilmente que evitem tons de branco/off-white e verde-oliva.]
+          </p>
+
+          <!-- Amostra visual de cores reservadas/sugeridas (customizável) -->
+          <div class="palette-dots" aria-hidden="true">
+            <span class="dot" style="background: #F7F5EE;" title="Reservado à noiva"></span>
+            <span class="dot" style="background: #4C533D;" title="Paleta dos noivos"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seção 4: Lista de Presentes & Pix -->
+      <section class="section-block" id="presentes">
+        <div class="section-header">
+          <span class="section-eyebrow">Carinho</span>
+          <h2 class="section-title">Lista de Presentes</h2>
+        </div>
+
+        <p style="text-align: center; font-size: 0.86rem; color: var(--text-muted); margin-bottom: 16px;">
+          O maior presente é ter você conosco neste dia. Caso deseje nos presentear, preparamos algumas opções:
+        </p>
+
+        <a href="#" target="_blank" rel="noopener" class="btn btn-primary" style="margin-bottom: 12px;">
+          <!-- [INSERIR: Link do site/lista de presentes] -->
+          Acessar Lista de Presentes
+        </a>
+
+        <!-- Opção Pix com cópia rápida -->
+        <div class="pix-box">
+          <span style="font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--olive-dark); font-weight: 500;">
+            Presente via Pix
+          </span>
+          <div class="pix-key" id="pixKeyText">
+            <!-- [INSERIR: Chave Pix real] -->
+            [INSERIR CHAVE PIX AQUI]
+          </div>
+          <button type="button" class="btn btn-outline" id="btnCopyPix" style="padding: 10px 14px; font-size: 0.72rem;">
+            Copiar Chave Pix
+          </button>
+        </div>
+      </section>
+
+      <!-- Seção 5: Manual dos Convidados -->
+      <section class="section-block" id="manual">
+        <div class="section-header">
+          <span class="section-eyebrow">Informações Úteis</span>
+          <h2 class="section-title">Dicas para Convidados</h2>
+        </div>
+
+        <details class="guide-item">
+          <summary>Hospedagem Recomendada</summary>
+          <div class="guide-body">
+            <!-- [INSERIR: Lista de hotéis em Guarapuava e códigos de desconto, se houver] -->
+            [INSERIR OPÇÕES DE HOTÉIS E TARIFAS ACORDADAS]
+          </div>
+        </details>
+
+        <details class="guide-item">
+          <summary>Salões de Beleza &amp; Barbearias</summary>
+          <div class="guide-body">
+            <!-- [INSERIR: Indicações de salões próximos à Catedral ou ao centro] -->
+            [INSERIR INDICAÇÕES DE SALÕES E CONTATOS]
+          </div>
+        </details>
+
+        <details class="guide-item">
+          <summary>Transporte &amp; Outras Dicas</summary>
+          <div class="guide-body">
+            <!-- [INSERIR: Dicas sobre Uber/táxi até o Bass Ranch, crianças, etc.] -->
+            [INSERIR ORIENTAÇÕES SOBRE DESLOCAMENTO E DEMAIS AVISOS]
+          </div>
+        </details>
+      </section>
+
+      <!-- Seção 6: Galeria de Fotos -->
+      <section class="section-block" id="galeria">
+        <div class="section-header">
+          <span class="section-eyebrow">Nossa História</span>
+          <h2 class="section-title">Momentos</h2>
+        </div>
+
+        <div class="polaroid-grid">
+          <div class="polaroid">
+            <div class="polaroid-placeholder">
+              <!-- Substituir por: <img src="foto1.jpg" alt="..." style="width:100%; height:100%; object-fit:cover;"> -->
+              [INSERIR FOTO 1]
+            </div>
+          </div>
+          <div class="polaroid">
+            <div class="polaroid-placeholder">
+              <!-- Substituir por: <img src="foto2.jpg" alt="..." style="width:100%; height:100%; object-fit:cover;"> -->
+              [INSERIR FOTO 2]
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Rodapé -->
+      <footer class="site-footer">
+        <div class="site-footer-inner">
+          <p class="footer-quote">
+            “Uma noite inesquecível<br />começa com a sua presença.”
+          </p>
+          <span class="footer-initials">THAMIRIS &amp; RAFAEL • 2027</span>
+        </div>
+      </footer>
+    </main>
+
+  </div>
+
+  <script src="./script.js"></script>
+
+</body>
+</html>
